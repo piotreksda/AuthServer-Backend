@@ -1,0 +1,19 @@
+@using OAuth2OpenId.Application.Commands.Clients.CreateClient
+@inject IJSRuntime JSRuntime
+
+<ModalComponent TModel="CreateClientInputModel" Title="Add Client" FormModel="formModel" PostUrl="/apps" OnSuccess="ReloadPageCallback">
+     <div class="mb-4">
+         <label for="name" class="block text-gray-700">Client Name</label>
+         <InputText id="name" name="name" class="w-full p-2 border border-gray-300 rounded mt-1" @bind-Value="formModel.Name" />
+     </div>
+</ModalComponent>
+@code {
+    CreateClientInputModel formModel = new();
+    
+    private EventCallback ReloadPageCallback => EventCallback.Factory.Create(this, ReloadPage);
+
+    private async Task ReloadPage()
+    {
+        await JSRuntime.InvokeVoidAsync("reloadPage");
+    }
+}

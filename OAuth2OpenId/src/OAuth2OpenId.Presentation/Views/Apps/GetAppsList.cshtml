@@ -1,0 +1,50 @@
+@model System.Collections.Generic.List<OAuth2OpenId.Domain.Models.ClientListViewModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "_Layout";
+}
+
+<div class="container mx-auto p-4">
+    <h2 class="text-2xl font-bold mb-4">Client List</h2>
+    <div class="flex justify-between items-center mb-4">
+        <div>
+            <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="/createapp">Add Client</a>
+        </div>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white shadow-md rounded">
+            <thead>
+                <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                    <th class="py-3 px-6 text-left">Name</th>
+                    <th class="py-3 px-6 text-center">Active</th>
+                    <th class="py-3 px-6 text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-600 text-sm font-light">
+                @foreach (var client in Model)
+                {
+                    <tr class="border-b border-gray-200 hover:bg-gray-100">
+                        <td class="py-3 px-6 text-left whitespace-nowrap">
+                            <span class="font-medium">@client.Name</span>
+                        </td>
+                        <td class="py-3 px-6 text-center">
+                            <span class="px-3 py-1 rounded-full text-xs @(client.IsActive ? "bg-green-200 text-green-600" : "bg-red-200 text-red-600")">
+                                @(client.IsActive ? "Active" : "Inactive")
+                            </span>
+                        </td>
+                        <td class="py-3 px-6 text-center">
+                            <a class="text-blue-600 hover:text-blue-900 bg-blue-100 px-4 py-2 rounded" 
+                               asp-controller="Apps" 
+                               asp-action="GetAppDetail" 
+                               asp-route-clientId="@client.Id">
+                                Details
+                            </a>                       
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

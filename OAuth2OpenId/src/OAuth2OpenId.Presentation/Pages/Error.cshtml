@@ -1,0 +1,21 @@
+@page
+@model OAuth2OpenId.Presentation.Pages.Error
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<div>
+    <h1>Warning! Error occured! :sadge:</h1>
+    <span style="color: red">@Model.ErrorModel.Message</span>
+    <a href="@Model.ErrorModel.RedirectUri">Back to origin</a>
+</div>
+</body>
+</html>

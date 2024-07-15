@@ -1,0 +1,416 @@
+@model OAuth2OpenId.Domain.Models.ClientDetailViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "_Layout";
+}
+
+<div class="container mx-auto p-4">
+    <h1 class="text-2xl font-bold">@Model.Name</h1>
+    <p class="mt-2">Status: <span class="font-semibold">@Model.IsActive</span></p>
+    <p class="mt-1">Client ID: <span class="font-mono">@Model.ClientId</span></p>
+
+    <div class="mt-4">
+        <h2 class="text-xl font-semibold">Client Environments</h2>
+        <button onclick="openModal('clientEnvironmentModal')" class="bg-blue-500 text-white px-4 py-2 rounded">Create Client Environment</button>
+        <table class="min-w-full divide-y divide-gray-200 mt-2">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        ID
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Name
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                @foreach (var env in Model.ClientEnvironments)
+                {
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            @env.Id
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            @env.Name
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            @* TODO: FIX *@
+                            @* <a href="@Url.Action("GetClientEnvironmentsDetail", "ClientEnvironment", new { clientEnvironmentId = env.Id })" class="text-indigo-600 hover:text-indigo-900">Edit</a> | *@
+                            @* <a href="@Url.Action("DeleteEnvironment", new { id = env.Id })" class="text-red-600 hover:text-red-900">Delete</a> *@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mt-6">
+        <h2 class="text-xl font-semibold">Grant Types</h2>
+        <button onclick="openModal('grantTypeModal')" class="bg-blue-500 text-white px-4 py-2 rounded">Create Grant Type</button>
+        <table class="min-w-full divide-y divide-gray-200 mt-2">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        ID
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Name
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                @foreach (var grant in Model.GrantTypes)
+                {
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            @grant.Id
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            @grant.Name
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            @* <a href="@Url.Action("EditGrantType", new { id = grant.Id })" class="text-indigo-600 hover:text-indigo-900">Edit</a> | *@
+                            @* <a href="@Url.Action("DeleteGrantType", new { id = grant.Id })" class="text-red-600 hover:text-red-900">Delete</a> *@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mt-6">
+        <h2 class="text-xl font-semibold">Scopes</h2>
+        <button onclick="openModal('scopeModal')" class="bg-blue-500 text-white px-4 py-2 rounded">Create Scope</button>
+        <table class="min-w-full divide-y divide-gray-200 mt-2">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        ID
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Name
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                @foreach (var scope in Model.Scopes)
+                {
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            @scope.Id
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            @scope.Name
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            @* <a href="@Url.Action("EditScope", new { id = scope.Id })" class="text-indigo-600 hover:text-indigo-900">Edit</a> | *@
+                            @* <a href="@Url.Action("DeleteScope", new { id = scope.Id })" class="text-red-600 hover:text-red-900">Delete</a> *@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modals -->
+<div id="clientEnvironmentModal" class="hidden fixed z-10 inset-0 overflow-y-auto">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+        </div>
+
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                            Create Client Environment
+                        </h3>
+                        <div class="mt-2">
+                            <input type="text" id="clientEnvironmentName" class="border rounded p-2 w-full" placeholder="Environment Name">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button type="button" onclick="createClientEnvironment()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 sm:ml-3 sm:w-auto sm:text-sm">
+                    Save
+                </button>
+                <button type="button" onclick="closeModal('clientEnvironmentModal')" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="grantTypeModal" class="hidden fixed z-10 inset-0 overflow-y-auto">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+        </div>
+
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                            Create Grant Type
+                        </h3>
+                        <div class="mt-2">
+                            <input type="text" id="grantTypeName" class="border rounded p-2 w-full" placeholder="Grant Type Name">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button type="button" onclick="createGrantType()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 sm:ml-3 sm:w-auto sm:text-sm">
+                    Save
+                </button>
+                <button type="button" onclick="closeModal('grantTypeModal')" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="scopeModal" class="hidden fixed z-10 inset-0 overflow-y-auto">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+        </div>
+
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                            Create Scope
+                        </h3>
+                        <div class="mt-2">
+                            <input type="text" id="scopeName" class="border rounded p-2 w-full" placeholder="Scope Name">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button type="button" onclick="createScope()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 sm:ml-3 sm:w-auto sm:text-sm">
+                    Save
+                </button>
+                <button type="button" onclick="closeModal('scopeModal')" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openModal(modalId) {
+        document.getElementById(modalId).classList.remove('hidden');
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.add('hidden');
+    }
+
+    async function createClientEnvironment() {
+        const name = document.getElementById('clientEnvironmentName').value;
+        const clientId = '@Model.ClientId.ToString()'
+
+        const response = await fetch('/api/clientenvironment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, clientId })
+        });
+
+        if (response.ok) {
+            closeModal('clientEnvironmentModal');
+            location.reload();
+        } else {
+            alert('Error creating client environment');
+        }
+    }
+
+    async function createGrantType() {
+        const name = document.getElementById('grantTypeName').value;
+        const clientId = '@Model.ClientId.ToString()'
+
+        const response = await fetch('/api/GrandType', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, clientId })
+        });
+
+        if (response.ok) {
+            closeModal('grantTypeModal');
+            location.reload();
+        } else {
+            alert('Error creating grant type');
+        }
+    }
+
+    async function createScope() {
+        const name = document.getElementById('scopeName').value;
+        const clientId = '@Model.ClientId.ToString()'
+        
+        const response = await fetch('/api/Scope', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, clientId })
+        });
+
+        if (response.ok) {
+            closeModal('scopeModal');
+            location.reload();
+        } else {
+            alert('Error creating scope');
+        }
+    }
+</script>
+
+
+@* @model OAuth2OpenId.Domain.Models.ClientDetailViewModel *@
+@* @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers *@
+@* *@
+@* @{ *@
+@*     Layout = "_Layout"; *@
+@* } *@
+@* *@
+@* <div class="container mx-auto p-4"> *@
+@*     <h1 class="text-2xl font-bold">@Model.Name</h1> *@
+@*     <p class="mt-2">Status: <span class="font-semibold">@Model.IsActive</span></p> *@
+@*     <p class="mt-1">Client ID: <span class="font-mono">@Model.ClientId</span></p> *@
+@* *@
+@*     <div class="mt-4"> *@
+@*         <h2 class="text-xl font-semibold">Client Environments</h2> *@
+@*         <table class="min-w-full divide-y divide-gray-200 mt-2"> *@
+@*             <thead class="bg-gray-50"> *@
+@*                 <tr> *@
+@*                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"> *@
+@*                         ID *@
+@*                     </th> *@
+@*                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"> *@
+@*                         Name *@
+@*                     </th> *@
+@*                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"> *@
+@*                         Actions *@
+@*                     </th> *@
+@*                 </tr> *@
+@*             </thead> *@
+@*             <tbody class="bg-white divide-y divide-gray-200"> *@
+@*                 @foreach (var env in Model.ClientEnvironments) *@
+@*                 { *@
+@*                     <tr> *@
+@*                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> *@
+@*                             @env.Id *@
+@*                         </td> *@
+@*                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> *@
+@*                             @env.Name *@
+@*                         </td> *@
+@*                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> *@
+@*                             $1$ <a href="@Url.Action("EditEnvironment", new { id = env.Id })" class="text-indigo-600 hover:text-indigo-900">Edit</a> | #1# *@
+@*                             $1$ <a href="@Url.Action("DeleteEnvironment", new { id = env.Id })" class="text-red-600 hover:text-red-900">Delete</a> #1# *@
+@*                         </td> *@
+@*                     </tr> *@
+@*                 } *@
+@*             </tbody> *@
+@*         </table> *@
+@*     </div> *@
+@* *@
+@*     <div class="mt-6"> *@
+@*         <h2 class="text-xl font-semibold">Grant Types</h2> *@
+@*         <table class="min-w-full divide-y divide-gray-200 mt-2"> *@
+@*             <thead class="bg-gray-50"> *@
+@*                 <tr> *@
+@*                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"> *@
+@*                         ID *@
+@*                     </th> *@
+@*                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"> *@
+@*                         Name *@
+@*                     </th> *@
+@*                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"> *@
+@*                         Actions *@
+@*                     </th> *@
+@*                 </tr> *@
+@*             </thead> *@
+@*             <tbody class="bg-white divide-y divide-gray-200"> *@
+@*                 @foreach (var grant in Model.GrantTypes) *@
+@*                 { *@
+@*                     <tr> *@
+@*                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> *@
+@*                             @grant.Id *@
+@*                         </td> *@
+@*                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> *@
+@*                             @grant.Name *@
+@*                         </td> *@
+@*                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> *@
+@*                             $1$ <a href="@Url.Action("EditGrantType", new { id = grant.Id })" class="text-indigo-600 hover:text-indigo-900">Edit</a> | #1# *@
+@*                             $1$ <a href="@Url.Action("DeleteGrantType", new { id = grant.Id })" class="text-red-600 hover:text-red-900">Delete</a> #1# *@
+@*                         </td> *@
+@*                     </tr> *@
+@*                 } *@
+@*             </tbody> *@
+@*         </table> *@
+@*     </div> *@
+@* *@
+@*     <div class="mt-6"> *@
+@*         <h2 class="text-xl font-semibold">Scopes</h2> *@
+@*         <table class="min-w-full divide-y divide-gray-200 mt-2"> *@
+@*             <thead class="bg-gray-50"> *@
+@*                 <tr> *@
+@*                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"> *@
+@*                         ID *@
+@*                     </th> *@
+@*                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"> *@
+@*                         Name *@
+@*                     </th> *@
+@*                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"> *@
+@*                         Actions *@
+@*                     </th> *@
+@*                 </tr> *@
+@*             </thead> *@
+@*             <tbody class="bg-white divide-y divide-gray-200"> *@
+@*                 @foreach (var scope in Model.Scopes) *@
+@*                 { *@
+@*                     <tr> *@
+@*                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> *@
+@*                             @scope.Id *@
+@*                         </td> *@
+@*                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> *@
+@*                             @scope.Name *@
+@*                         </td> *@
+@*                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> *@
+@*                             $1$ <a href="@Url.Action("EditScope", new { id = scope.Id })" class="text-indigo-600 hover:text-indigo-900">Edit</a> | #1# *@
+@*                             $1$ <a href="@Url.Action("DeleteScope", new { id = scope.Id })" class="text-red-600 hover:text-red-900">Delete</a> #1# *@
+@*                         </td> *@
+@*                     </tr> *@
+@*                 } *@
+@*             </tbody> *@
+@*         </table> *@
+@*     </div> *@
+@* </div> *@

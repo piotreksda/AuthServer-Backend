@@ -1,0 +1,72 @@
+@* @page *@
+@* @model OAuth2OpenId.Presentation.Pages.LoginModel *@
+@* @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers *@
+@* *@
+@* @{ *@
+@*     Layout = "Shared/_Layout"; *@
+@*     ViewData["Title"] = "Login and Register"; *@
+@* } *@
+@* *@
+@* <form method="post" asp-page-handler="Login" id="loginForm" class="space-y-4"> *@
+@*     <div asp-validation-summary="ModelOnly" class="text-red-500"></div> *@
+@*     <h2 class="text-2xl font-semibold mb-4">Login</h2> *@
+@*     <div class="mb-4"> *@
+@*         <label for="username" class="block text-gray-700">Username</label> *@
+@*         <input type="text" class="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="username" name="Credentials.Username" required> *@
+@*     </div> *@
+@*     <div class="mb-4"> *@
+@*         <label for="password" class="block text-gray-700">Password</label> *@
+@*         <input type="password" class="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="password" name="Credentials.Password" required> *@
+@*     </div> *@
+@*     <input type="hidden" name="continue" value="@Model.Continue"/> *@
+@* *@
+@*     <h3 class="text-center text-red-700">@Html.ValidationMessage("LoginFailed")</h3> *@
+@* *@
+@*     <div class="flex items-center justify-between"> *@
+@*         <button type="submit" class="btn btn-primary bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded" asp-page-handler="Login">Login</button> *@
+@*         <button type="button" class="text-blue-500 hover:underline" onclick="switchForms('register')">Register Instead</button> *@
+@*     </div> *@
+@* </form> *@
+@* *@
+@* <form method="post" asp-page-handler="Register" id="registerForm" class="space-y-4 hidden"> *@
+@*     <div asp-validation-summary="ModelOnly" class="text-red-500"></div> *@
+@*     <h2 class="text-2xl font-semibold mb-4">Register</h2> *@
+@*     <div class="mb-4"> *@
+@*         <label for="newUsername" class="block text-gray-700">Username</label> *@
+@*         <input type="text" class="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="newUsername" name="username" required> *@
+@*     </div> *@
+@*     <div class="mb-4"> *@
+@*         <label for="newPassword" class="block text-gray-700">Password</label> *@
+@*         <input type="password" class="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="newPassword" name="password" required> *@
+@*     </div> *@
+@*     <div class="mb-4"> *@
+@*         <label for="confirmPassword" class="block text-gray-700">Confirm Password</label> *@
+@*         <input type="password" class="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="confirmPassword" name="confirmPassword" required> *@
+@*     </div> *@
+@*     <input type="hidden" name="continue" value="@Model.Continue"/> *@
+@* *@
+@*     <h3 class="text-center text-red-700">@Html.ValidationMessage("RegisterFailed")</h3> *@
+@* *@
+@*     <div class="flex items-center justify-between"> *@
+@*         <button type="submit" class="btn btn-primary bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded" asp-page-handler="Register">Register</button> *@
+@*         <button type="button" class="text-blue-500 hover:underline" onclick="switchForms('login')">Login Instead</button> *@
+@*     </div> *@
+@* </form> *@
+@* *@
+@* <script> *@
+@* document.addEventListener('DOMContentLoaded', function () { *@
+@*     var showErrorFor = '@ViewData["ShowForm"]'; *@
+@*     switchForms(showErrorFor); *@
+@* }); *@
+@* *@
+@* function switchForms(form) { *@
+@*     if (form === 'login' || form === 'LoginFailed') { *@
+@*         document.getElementById('loginForm').style.display = 'block'; *@
+@*         document.getElementById('registerForm').style.display = 'none'; *@
+@*     } else if (form === 'register' || form === 'RegisterFailed') { *@
+@*         document.getElementById('loginForm').style.display = 'none'; *@
+@*         document.getElementById('registerForm').style.display = 'block'; *@
+@*     } *@
+@* } *@
+@* </script> *@
+@* *@

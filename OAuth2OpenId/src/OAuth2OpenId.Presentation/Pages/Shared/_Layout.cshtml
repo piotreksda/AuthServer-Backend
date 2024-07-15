@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - YourAppName</title>
+    <link href="~/css/site.css" rel="stylesheet" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <meta name="author" content="name"/>
+    <meta name="description" content="description here"/>
+    <meta name="keywords" content="keywords,here"/>
+    <link rel="stylesheet" href="~/css/output.css"/>
+    
+    <script src="~/js/modal.js"></script>
+</head>
+<body class="bg-gray-100">
+<header class="bg-blue-600 p-4">
+    <div class="container mx-auto flex justify-between items-center">
+        <div class="text-white text-2xl font-bold">
+            <a href="~/">YourAppName</a>
+        </div>
+        <nav>
+            <ul class="flex space-x-4">
+                <li>
+                    <a href="~/" class="text-white">Home</a>
+                </li>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a href="~/apps" class="text-white">My apps</a>
+                }
+                <li>
+                    <a href="~/About" class="text-white">About</a>
+                </li>
+                <li>
+                    <a href="~/Contact" class="text-white">Contact</a>
+                </li>
+            </ul>
+        </nav>
+        <div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="text-white">
+                    Hello, @User.Identity.Name!
+                    <a href="~/logout" class="ml-4 bg-red-500 text-white py-2 px-4 rounded">Logout</a>
+                </div>
+            }
+            else
+            {
+                <a href="~/Login" class="bg-green-500 text-white py-2 px-4 rounded">Login</a>
+            }
+        </div>
+    </div>
+</header>
+<main class="container mx-auto py-8">
+    @RenderBody()
+</main>
+<footer class="bg-blue-600 p-4 text-center text-white">
+    &copy; 2024 - YourAppName
+</footer>
+</body>
+</html>

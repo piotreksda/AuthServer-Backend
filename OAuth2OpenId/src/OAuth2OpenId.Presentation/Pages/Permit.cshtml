@@ -1,0 +1,29 @@
+@page
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model OAuth2OpenId.Presentation.Pages.Permit
+@{
+    Layout = null;
+}
+
+<h1>test123</h1>
+<form method="post" asp-page-handler="Data">
+    @foreach (var clientScope in Model.ClientScopes)
+    {
+        <label for="@clientScope.ScopeName">@clientScope.ScopeName</label>
+        <input id="@clientScope.ScopeName" 
+               name="scopes" 
+               type="checkbox" 
+               value="@clientScope.ClientScopeId"
+               @(clientScope.Accepted ? "checked disabled" : "")
+               @(Model.InputScopes.Contains(clientScope.ScopeName) ? "checked disabled" : "") />
+        @if (clientScope.Accepted || Model.InputScopes.Contains(clientScope.ScopeName))
+        {
+            <input type="hidden" name="scopes" value="@clientScope.ClientScopeId" />
+        }
+    }
+    <input type="hidden" name="continueWith" value="@Model.Continue" />
+    <button type="submit" class="btn btn-primary" asp-page-handler="Reject">Login</button>
+    <button type="submit" class="btn btn-primary" asp-page-handler="Accept">Login</button>
+</form>
